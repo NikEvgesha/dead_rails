@@ -34,16 +34,28 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal") * _moveSpeed * Time.deltaTime;
         float vertical = Input.GetAxis("Vertical") * Time.deltaTime;
+        Vector3 movement;
 
         if (_characterController.isGrounded)
         {
             _velocity = 0;
         }
 
-        _velocity += Input.GetKeyDown(KeyCode.Space) ? Mathf.Sqrt(_jumpHeight * _gravity) : -_gravity * Time.deltaTime;
-        vertical *= (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? _sprint : _moveSpeed;
+        //_velocity += Input.GetKeyDown(KeyCode.Space) ? _moveSpeed * Time.deltaTime : 0;
+        if (Input.GetKey(KeyCode.Space))
+        {
+            _velocity += _jumpHeight * Time.deltaTime;
+        } else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            _velocity -= _jumpHeight * Time.deltaTime;
+        } else
+        {
+            _velocity = 0;
+        }
+            vertical *= (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? _sprint : _moveSpeed;
 
-        _characterController.Move((_camera.transform.right * horizontal + _camera.transform.forward * vertical + new Vector3(0, _velocity, 0)) * Time.deltaTime);
+        movement = _camera.transform.right * horizontal + _camera.transform.forward * vertical + new Vector3(0, _velocity, 0);
+        _characterController.Move(movement * Time.deltaTime);
     }
 
     private void MouseLook()
