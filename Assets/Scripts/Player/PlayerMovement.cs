@@ -3,72 +3,80 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
-    [SerializeField] private int _lookSpeedMouse;
-    [SerializeField] private int _moveSpeed;
-    [SerializeField] private int _jumpHeight;
-    [SerializeField] private float _sprint;
-    [SerializeField] private float _gravity;
+    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _rotationSpeed = 100f;
+    [SerializeField] private float _maxSpeed = 10f;
+    [SerializeField] private float _damping = 0.995f;
+
+    private PlayerInput _input;
+
+    private CharacterController _controller;
+
+    private Vector3 _velocity;
+
+    private bool _onPlatform;
 
 
-    private Vector2 _rotation;
-    private CharacterController _characterController;
-    private float _velocity = 0f;
-    private void OnValidate()
+    void Start()
     {
-        _sprint = _moveSpeed >= _sprint ? _moveSpeed * 1.5f : _sprint;
+        _controller = GetComponent<CharacterController>();
+        _input = GetComponent<PlayerInput>();
     }
 
-    private void Start()
+    void Update()
     {
-        _characterController = GetComponent<CharacterController>();
-    }
-
-    private void Update()
-    {
-        MouseLook();
-        Move();
-    }
-
-    private void Move()
-    {
-        float horizontal = Input.GetAxis("Horizontal") * _moveSpeed * Time.deltaTime;
-        float vertical = Input.GetAxis("Vertical") * Time.deltaTime;
-        Vector3 movement;
-
-        if (_characterController.isGrounded)
+        if (_onPlatform)
         {
-            _velocity = 0;
-        }
-
-        //_velocity += Input.GetKeyDown(KeyCode.Space) ? _moveSpeed * Time.deltaTime : 0;
-        if (Input.GetKey(KeyCode.Space))
-        {
-            _velocity += _jumpHeight * Time.deltaTime;
-        } else if (Input.GetKey(KeyCode.LeftControl))
-        {
-            _velocity -= _jumpHeight * Time.deltaTime;
+            PlatformMove();
         } else
         {
-            _velocity = 0;
+            SpaceMove();
         }
-            vertical *= (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? _sprint : _moveSpeed;
-
-        movement = _camera.transform.right * horizontal + _camera.transform.forward * vertical + new Vector3(0, _velocity, 0);
-        _characterController.Move(movement * Time.deltaTime);
+        
+        CameraRotation();
     }
 
-    private void MouseLook()
+    private void SpaceMove()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _lookSpeedMouse * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * _lookSpeedMouse * Time.deltaTime;
+        Vector3 movement = _input.Movement;
 
-        _rotation.y += mouseX;
-        _rotation.x -= mouseY;
+        if (_input.SpaceUp)
+        {
+            movement.y = 1f;
+        }
+        else if (_input.SpaceDown)
+        {
+            movement.y = -1f;
+        }
 
-        _rotation.x = Mathf.Clamp(_rotation.x, -90, 90);
+        if (movement.magnitude > 0f)
+        {
+            Vector3 acceleration = transform.TransformDirection(movement) * _moveSpeed;
+            _velocity += acceleration * Time.deltaTime;
+        }
 
-        transform.eulerAngles = new Vector3(_rotation.x, _rotation.y, 0);
+        _velocity *= _damping;
 
+        if (_velocity.magnitude > _maxSpeed)
+        {
+            _velocity = _velocity.normalized * _maxSpeed;
+        }
+
+        _controller.Move(_velocity * Time.deltaTime);
     }
+
+
+    private void PlatformMove()
+    {
+        
+    }
+
+    private void CameraRotation()
+    {
+        Vector2 rotation = _input.Rotation * _rotationSpeed * Time.deltaTime;
+
+        transform.Rotate(0f, rotation.x, 0f, Space.World);
+        transform.Rotate(-rotation.y, 0f, 0f, Space.Self);
+    }
+
 }
