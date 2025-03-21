@@ -11,11 +11,25 @@ public class PlayerInput : MonoBehaviour
     public Vector3 Movement { get; private set; }
     public Vector2 Rotation { get; private set; }
 
+    public bool JumpTriggered
+    {
+        get
+        {
+            var tmp = _jump;
+            _jump = false;
+            return tmp;
+        }
+        private set { }
+    }
+
+
+    private bool _jump;
 
     private void Update()
     {
         SpaceUp = Input.GetKey(KeyCode.Space);
         SpaceDown = Input.GetKey(KeyCode.LeftControl);
+        JumpTriggered = Input.GetKeyDown(KeyCode.Space);
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
