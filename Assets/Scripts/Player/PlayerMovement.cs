@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private GameObject _camera;
     [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private float _maxSpeed = 10f;
@@ -12,7 +13,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _gravity = 9.8f;
     [SerializeField] private float _fallSpeed = 1;
 
+    [SerializeField] private float _YRotationLimitMax = 80f;
+    [SerializeField] private float _YRotationLimitMin = -80f;
+
     [SerializeField] private bool _onPlatform;
+    [SerializeField] private bool _isGrounded;
 
     private PlayerInput _input;
 
@@ -20,17 +25,21 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _velocity;
     private Vector3 _moveDirection;
-
-
+    private float _currentXRotation = 0f;
+    private float _currentYRotation = 0f;
+    private ControlUI _controlUI;
 
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         _input = GetComponent<PlayerInput>();
+        _controlUI = FindAnyObjectByType<ControlUI>();
+        _controlUI.UseMobileSetup(_input.UseTouchControl);
     }
 
     void Update()
     {
+        _isGrounded = _controller.isGrounded;
         if (_onPlatform)
         {
             PlatformMove();
@@ -77,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = _input.Movement;
         Vector3 moveDirection = transform.TransformDirection(movement);
         moveDirection.y = 0f;
-        moveDirection = moveDirection.normalized;
+        //moveDirection = moveDirection.normalized;
 
         Vector3 horizontalMovement = moveDirection * _moveSpeed;
 
@@ -85,10 +94,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (_controller.isGrounded)
         {
-            _velocity.y = -0.1f;
+            _velocity.y = -0.5f;
 
-            if (_input.SpaceUp)
+            if (_input.JumpTriggered)
             {
+                Debug.Log("Jump triggered");
                 _velocity.y = _jumpPower;
             }
         }
@@ -102,10 +112,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void CameraRotation()
     {
-        Vector2 rotation = _input.Rotation * _rotationSpeed * Time.deltaTime;
+        Vector2 rotationInput = _input.Rotation * _rotationSpeed * Time.deltaTime;
 
-        transform.Rotate(0f, rotation.x, 0f, Space.World);
-        transform.Rotate(-rotation.y, 0f, 0f, Space.Self);
+        _currentYRotation += rotationInput.x;
+
+        _currentXRotation -= rotationInput.y;
+        _currentXRotation = Mathf.Clamp(_currentXRotation, _YRotationLimitMin, _YRotationLimitMax);
+        transform.rotation = Quaternion.Euler(0f, _currentYRotation, 0f);
+        _camera.transform.localRotation = Quaternion.Euler(_currentXRotation, 0f, 0f);
     }
 
 
@@ -113,8 +127,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "GravityPlatform")
         {
-            Debug.Log("Gravity enter");
             _onPlatform = true;
+            _controlUI.SwitchPlatformControls(_onPlatform);
         }
     }
 
@@ -122,8 +136,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "GravityPlatform")
         {
-            Debug.Log("Gravity exit");
             _onPlatform = false;
+            _controlUI.SwitchPlatformControls(_onPlatform);
         }
     }
 
