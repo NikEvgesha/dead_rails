@@ -1,0 +1,130 @@
+newmtl AssassinRobot1Mtl
+Material Color
+Ka 1 0 0
+Kd 1 0 0
+Ks 0.87451 0 0 
+
+d 1
+
+Ns 0
+
+map_Ka AssassinRobot1_diff.png
+map_Kd AssassinRobot1_diff.png
+map_d AssassinRobot1_diff.png
+
+map_Bump AssassinRobot1_nmap.png
+
+map_Ns AssassinRobot1_spec.png
+
+newmtl Sword1Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.0627451 0.0627451 0.0627451 
+
+d 1
+
+Ns 0
+
+map_Ka Sword1_diff.png
+map_Kd Sword1_diff.png
+map_d Sword1_diff.png
+
+newmtl AssassinRobot2Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.666667 0.666667 0.666667 
+
+d 1
+
+Ns 255
+
+map_Ka AssassinRobot2_diff.png
+map_Kd AssassinRobot2_diff.png
+map_d AssassinRobot2_diff.png
+
+newmtl Handle1Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.0627451 0.0627451 0.0627451 
+
+d 1
+
+Ns 0
+
+map_Ka Handle1_diff.png
+map_Kd Handle1_diff.png
+map_d Handle1_diff.png
+
+newmtl AssassinRobot6Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka AssassinRobot6_diff.png
+map_Kd AssassinRobot6_diff.png
+map_d AssassinRobot6_diff.png
+
+newmtl Eye1Mtl
+Material Color
+Ka 1 0 0
+Kd 1 0 0
+Ks 0.0901961 0 0 
+
+d 1
+
+Ns 0
+
+newmtl Visor1Mtl
+Material Color
+Ka 0.00258583 0.00258583 0.00258583
+Kd 0.00258583 0.00258583 0.00258583
+Ks 0.00172388 0.00172388 0.00172388 
+
+d 1
+
+Ns 255
+
+map_Ka Visor1_diff.png
+map_Kd Visor1_diff.png
+map_d Visor1_diff.png
+
+map_Bump Visor1_nmap.png
+
+map_Ns Visor1_spec.png
+
+newmtl AssassinRobot3Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka AssassinRobot2_diff.png
+map_Kd AssassinRobot2_diff.png
+map_d AssassinRobot2_diff.png
+
+newmtl AssassinRobot11Mtl
+Material Color
+Ka 1 0 0
+Kd 1 0 0
+Ks 0.196078 0 0 
+
+d 1
+
+Ns 255
+
+map_Bump AssassinRobot11_nmap.png
+
+map_Ns AssassinRobot11_spec.png
+

@@ -1,0 +1,110 @@
+newmtl Middle1Mtl
+Material Color
+Ka 0.378676 0.517401 0.0600316
+Kd 0.378676 0.517401 0.0600316
+Ks 0.0237601 0.0324644 0.00376669 
+
+d 1
+
+Ns 0
+
+newmtl Wire1Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.0627451 0.0627451 0.0627451 
+
+d 1
+
+Ns 0
+
+newmtl Laser1Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.0627451 0.0627451 0.0627451 
+
+d 0.772549
+
+Ns 0
+
+newmtl Part1Mtl
+Material Color
+Ka 0.124741 0.113921 0.121986
+Kd 0.124741 0.113921 0.121986
+Ks 0.00782688 0.00714798 0.00765401 
+
+d 1
+
+Ns 0
+
+newmtl Middle3Mtl
+Material Color
+Ka 0 1 1
+Kd 0 1 1
+Ks 0 0.0627451 0.0627451 
+
+d 0.839216
+
+Ns 0
+
+newmtl Eye1Mtl
+Material Color
+Ka 1 0 0
+Kd 1 0 0
+Ks 0.0627451 0 0 
+
+d 0.501961
+
+Ns 0
+
+newmtl RobotFace1Mtl
+Material Color
+Ka 0.325037 0.325037 0.325037
+Kd 0.325037 0.325037 0.325037
+Ks 0.0203945 0.0203945 0.0203945 
+
+d 1
+
+Ns 0
+
+newmtl Part3Mtl
+Material Color
+Ka 0.91575 0.618686 0.0253713
+Kd 0.91575 0.618686 0.0253713
+Ks 0.0574588 0.0388195 0.00159192 
+
+d 1
+
+Ns 0
+
+newmtl Eye2Mtl
+Material Color
+Ka 1 0 0
+Kd 1 0 0
+Ks 0.0627451 0 0 
+
+d 1
+
+Ns 0
+
+newmtl Part4Mtl
+Material Color
+Ka 0 1 1
+Kd 0 1 1
+Ks 0 0.0627451 0.0627451 
+
+d 1
+
+Ns 0
+
+newmtl Middle4Mtl
+Material Color
+Ka 0.00143313 0.14198 0.420508
+Kd 0.00143313 0.14198 0.420508
+Ks 8.99222e-05 0.00890857 0.0263848 
+
+d 1
+
+Ns 0
+
