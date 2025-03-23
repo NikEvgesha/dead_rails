@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private float _currentYRotation = 0f;
     private ControlUI _controlUI;
     private int _gravitySourceCounter = 0;
+
+    private List<Collider> _gravityPlatforms = new List<Collider>();
 
     void Start()
     {
@@ -91,7 +93,6 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 horizontalMovement = moveDirection * _moveSpeed;
 
-        float verticalMovement = 0f;
 
         if (_controller.isGrounded)
         {
@@ -126,8 +127,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "GravityPlatform")
         {
+            if (_gravityPlatforms.Contains(other))
+                return;
+
+            _gravityPlatforms.Add(other);
             _gravitySourceCounter += 1;
             if (!_onPlatform)
             {
@@ -141,6 +147,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "GravityPlatform")
         {
+            if (!_gravityPlatforms.Contains(other))
+                return;
+
+            _gravityPlatforms.Remove(other);
             _gravitySourceCounter -= 1;
             if (_onPlatform && _gravitySourceCounter <= 0)
             {

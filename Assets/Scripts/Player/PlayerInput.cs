@@ -27,7 +27,7 @@ public class PlayerInput : MonoBehaviour
 
 
     private bool _jump;
-
+    private bool _inTrain;
     /*    private void Awake()
         {
             IsCursorVisible = false;
@@ -42,33 +42,42 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
+        CheckTouchControls();
+        UpdateMovement();
+        UpdateRotation();
+    }
+
+    private void CheckTouchControls()
+    {
         if (_useTouchControls)
         {
             SpaceUp = _touchControls.upButton.IsHolded;
             SpaceDown = _touchControls.downButton.IsHolded;
             _jump = _touchControls.jumpButton.IsTriggered;
-        } else
+        }
+        else
         {
             SpaceUp = Input.GetKey(KeyCode.Space);
             Debug.Log("SpaceUp: " + SpaceUp);
             SpaceDown = Input.GetKey(KeyCode.LeftControl);
             _jump = SpaceUp;
-            Debug.Log("Jump: " +  _jump);
+            Debug.Log("Jump: " + _jump);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ShowCursor(!IsCursorVisible);
         }
-
-        UpdateMovement();
-        UpdateRotation();
-
-
     }
 
     private void UpdateMovement()
     {
+        if (_inTrain)
+        {
+            Movement = new Vector3(0f, 0f, 0f);
+            return;
+        }
+
         if (_useTouchControls)
         {
             Movement = new Vector3(_touchControls.moveJoystick.Horizontal(), 0f, _touchControls.moveJoystick.Vertical());
@@ -98,5 +107,9 @@ public class PlayerInput : MonoBehaviour
         IsCursorVisible = visible;
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+    public void SitTrain(bool inTrain)
+    {
+        _inTrain = inTrain;
     }
 }
