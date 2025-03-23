@@ -1,5 +1,15 @@
+using System;
 using UnityEngine;
 
+[Serializable]
+public struct TouchControls
+{
+    public OnScreenButton upButton;
+    public OnScreenButton downButton;
+    public OnScreenButton jumpButton;
+    public OnScreenJoystick moveJoystick;
+    public CameraTouchController cameraTouchController;
+}
 public class ControlUI : MonoBehaviour
 {
     [SerializeField]
@@ -7,9 +17,7 @@ public class ControlUI : MonoBehaviour
     [SerializeField]
     private GameObject _desktopUI;
 
-    [SerializeField] private OnScreenButton _upButton;
-    [SerializeField] private OnScreenButton _downButton;
-    [SerializeField] private OnScreenButton _jumpButton;
+    [SerializeField] private TouchControls _touchControls;
 
     private bool _isMobile;
 
@@ -23,9 +31,14 @@ public class ControlUI : MonoBehaviour
 
     public void SwitchPlatformControls(bool onPlatform)
     {
-        _upButton.gameObject.SetActive(!onPlatform);
-        _downButton.gameObject.SetActive(!onPlatform);
-        _jumpButton.gameObject.SetActive(onPlatform);
+        _touchControls.upButton.gameObject.SetActive(!onPlatform);
+        _touchControls.downButton.gameObject.SetActive(!onPlatform);
+        _touchControls.jumpButton.gameObject.SetActive(onPlatform);
+    }
+
+    public TouchControls GetTouchControls()
+    {
+        return _touchControls;
     }
 
 }

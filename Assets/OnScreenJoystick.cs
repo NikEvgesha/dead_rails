@@ -13,21 +13,17 @@ public class OnScreenJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, 
 
     void Start()
     {
-        // Store initial position
         startPos = background.anchoredPosition;
     }
 
-    // Called when pointer/touch presses down
     public void OnPointerDown(PointerEventData eventData)
     {
         isDragging = true;
         OnDrag(eventData);
     }
 
-    // Called while dragging
     public void OnDrag(PointerEventData eventData)
     {
-        // Convert screen point to local point in rectangle
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             background,
@@ -36,18 +32,11 @@ public class OnScreenJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, 
             out localPoint
         );
 
-        // Clamp the position within the radius
         localPoint = Vector2.ClampMagnitude(localPoint, maxRadius);
-
-        // Update knob position
         knob.anchoredPosition = localPoint;
-
-        // Calculate input vector (-1 to 1 range)
         inputVector = localPoint / maxRadius;
-        Debug.Log("Joystick: " + inputVector);
     }
 
-    // Called when pointer/touch is released
     public void OnPointerUp(PointerEventData eventData)
     {
         isDragging = false;
@@ -55,7 +44,6 @@ public class OnScreenJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, 
         knob.anchoredPosition = Vector2.zero;
     }
 
-    // Public methods to get the input values
     public float Horizontal()
     {
         return inputVector.x;
@@ -66,7 +54,6 @@ public class OnScreenJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, 
         return inputVector.y;
     }
 
-    // Optional: Get the raw Vector2 input
     public Vector2 GetInputDirection()
     {
         return inputVector;

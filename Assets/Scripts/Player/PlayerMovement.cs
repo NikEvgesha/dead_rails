@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private float _currentXRotation = 0f;
     private float _currentYRotation = 0f;
     private ControlUI _controlUI;
+    private int _gravitySourceCounter = 0;
 
     void Start()
     {
@@ -127,8 +128,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "GravityPlatform")
         {
-            _onPlatform = true;
-            _controlUI.SwitchPlatformControls(_onPlatform);
+            _gravitySourceCounter += 1;
+            if (!_onPlatform)
+            {
+                _onPlatform = true;
+                _controlUI.SwitchPlatformControls(_onPlatform);
+            }
         }
     }
 
@@ -136,8 +141,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "GravityPlatform")
         {
-            _onPlatform = false;
-            _controlUI.SwitchPlatformControls(_onPlatform);
+            _gravitySourceCounter -= 1;
+            if (_onPlatform && _gravitySourceCounter <= 0)
+            {
+                _onPlatform = false;
+                _controlUI.SwitchPlatformControls(_onPlatform);
+            }  
         }
     }
 
