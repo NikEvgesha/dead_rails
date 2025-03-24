@@ -74,6 +74,9 @@ public class PickableItem : MonoBehaviour
         if (!_inGravitySource) {
             _rb.useGravity = false;
             //_rb.velocity = Vector3.zero;
+        } else
+        {
+            _rb.useGravity = true;
         }
     }
 }
