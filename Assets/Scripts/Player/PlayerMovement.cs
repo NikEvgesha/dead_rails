@@ -2,16 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(GravityChecker))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject _camera;
-    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private float _maxSpeed = 10f;
     [SerializeField] private float _damping = 0.995f;
     [SerializeField] private float _jumpPower = 5;
     [SerializeField] private float _gravity = 9.8f;
     [SerializeField] private float _fallSpeed = 1;
+    [SerializeField] private float _spaceSpeedMultiplier = 2f;
+    [SerializeField] private float _verticalSpaceSpeed = 2f;
 
     [SerializeField] private float _YRotationLimitMax = 80f;
     [SerializeField] private float _YRotationLimitMin = -80f;
@@ -29,15 +33,25 @@ public class PlayerMovement : MonoBehaviour
     private float _currentYRotation = 0f;
     private ControlUI _controlUI;
     private int _gravitySourceCounter = 0;
+    private GravityChecker _gravityChecker;
 
-    private List<Collider> _gravityPlatforms = new List<Collider>();
+    private HashSet<Collider> _gravityPlatforms = new HashSet<Collider>();
 
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         _input = GetComponent<PlayerInput>();
+        _gravityChecker = GetComponent<GravityChecker>();
         _controlUI = FindAnyObjectByType<ControlUI>();
         _controlUI.UseMobileSetup(_input.UseTouchControl);
+
+        _gravityChecker.GravityChanged += OnGravityChanged;
+    }
+
+
+    private void OnDisable()
+    {
+        _gravityChecker.GravityChanged -= OnGravityChanged;
     }
 
     void Update()
@@ -60,19 +74,25 @@ public class PlayerMovement : MonoBehaviour
 
         if (_input.SpaceUp)
         {
-            movement.y = 1f;
+            _velocity.y = _verticalSpaceSpeed;
         }
         else if (_input.SpaceDown)
         {
-            movement.y = -1f;
+            _velocity.y = -_verticalSpaceSpeed;
         }
+
+        Vector3 cameraForward = _camera.transform.forward;
+        Vector3 cameraRight = _camera.transform.right;
+
+
+        Vector3 horizontalMovement = (cameraForward * movement.z + cameraRight * movement.x).normalized;
+
 
         if (movement.magnitude > 0f)
         {
-            Vector3 acceleration = transform.TransformDirection(movement) * _moveSpeed;
+            Vector3 acceleration = horizontalMovement * _moveSpeed * _spaceSpeedMultiplier;
             _velocity += acceleration * Time.deltaTime;
         }
-
         _velocity *= _damping;
 
         if (_velocity.magnitude > _maxSpeed)
@@ -124,40 +144,10 @@ public class PlayerMovement : MonoBehaviour
         _camera.transform.localRotation = Quaternion.Euler(_currentXRotation, 0f, 0f);
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void OnGravityChanged(bool inGravitySource)
     {
-
-        if (other.tag == "GravityPlatform")
-        {
-            if (_gravityPlatforms.Contains(other))
-                return;
-
-            _gravityPlatforms.Add(other);
-            _gravitySourceCounter += 1;
-            if (!_onPlatform)
-            {
-                _onPlatform = true;
-                _controlUI.SwitchPlatformControls(_onPlatform);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "GravityPlatform")
-        {
-            if (!_gravityPlatforms.Contains(other))
-                return;
-
-            _gravityPlatforms.Remove(other);
-            _gravitySourceCounter -= 1;
-            if (_onPlatform && _gravitySourceCounter <= 0)
-            {
-                _onPlatform = false;
-                _controlUI.SwitchPlatformControls(_onPlatform);
-            }  
-        }
+        _onPlatform = inGravitySource;
+        _controlUI.SwitchPlatformControls(_onPlatform);
     }
 
 }

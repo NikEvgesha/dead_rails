@@ -25,15 +25,29 @@ public class PlayerInput : MonoBehaviour
         private set { }
     }
 
+    public bool Interaction 
+    { 
+        get 
+        {
+            var tmp = _interaction;
+            _interaction = false;
+            return tmp;
+        }
+        private set { } 
+    }
 
     private bool _jump;
+    private bool _interaction;
     private bool _inTrain;
-    /*    private void Awake()
+    private void Awake()
+    {
+        if (!_useTouchControls)
         {
             IsCursorVisible = false;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-        }*/
+        }
+    }
 
     private void Start()
     {
@@ -42,26 +56,26 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        CheckTouchControls();
+        CheckControls();
         UpdateMovement();
         UpdateRotation();
     }
 
-    private void CheckTouchControls()
+    private void CheckControls()
     {
         if (_useTouchControls)
         {
             SpaceUp = _touchControls.upButton.IsHolded;
             SpaceDown = _touchControls.downButton.IsHolded;
             _jump = _touchControls.jumpButton.IsTriggered;
+            _interaction = _touchControls.pickUpButton.IsTriggered;
         }
         else
         {
             SpaceUp = Input.GetKey(KeyCode.Space);
-            Debug.Log("SpaceUp: " + SpaceUp);
             SpaceDown = Input.GetKey(KeyCode.LeftControl);
             _jump = SpaceUp;
-            Debug.Log("Jump: " + _jump);
+            _interaction = Input.GetMouseButtonDown(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
