@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508f9b20e0d07af459572f6160c7a543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useTouchControls: 0
+  _useTouchControls: 1
 --- !u!143 &130566391238704941
 CharacterController:
   m_ObjectHideFlags: 0
@@ -266,7 +266,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 500
   field of view: 60
   orthographic: 0
   orthographic size: 5

@@ -64,8 +64,8 @@ public class PlayerMovement : MonoBehaviour
         {
             SpaceMove();
         }
-        
-        CameraRotation();
+        //if (!Cursor.visible)
+            CameraRotation();
     }
 
     private void SpaceMove()

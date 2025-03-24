@@ -24,21 +24,17 @@ public class OnScreenButton : MonoBehaviour, IPointerClickHandler, IPointerDownH
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _triggered = true;
-        Debug.Log("Click");
-        
+        _triggered = true; 
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         _holded = true;
-        Debug.Log("Pointer Down");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         _holded = false;
-        Debug.Log("Pointer Up");
     }
 
 
