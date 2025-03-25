@@ -13,7 +13,7 @@ public class DriverSeatTrigger : MonoBehaviour
     public GameObject playerCharacter;
 
     [Tooltip("Имя компонента, отвечающего за стандартное движение игрока (например, PlayerMovement)")]
-    public string playerMovementComponentName = "PlayerMovement";
+    public string playerMovementComponentName = "PlayerInput";
 
     // Флаг, показывающий, находится ли игрок в режиме вождения
     private bool isDriving = false;
@@ -29,6 +29,10 @@ public class DriverSeatTrigger : MonoBehaviour
     {
         // Получаем ссылку на компонент PlayerInput у игрока
         playerInput = playerCharacter.GetComponent<PlayerInput>();
+        if (playerInput != null && playerCharacter == null) 
+        {
+            playerCharacter = playerInput.gameObject;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
