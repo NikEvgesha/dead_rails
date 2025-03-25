@@ -1,20 +1,31 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PickableItem : MonoBehaviour
 {
-    [SerializeField] private float _lerpSpeed = 10;
+    [SerializeField] private float _lerpSpeed = 15;
+    [SerializeField] private ItemData _itemData;
+    [SerializeField] private GameObject _visualObj;
     public bool Grabbed { get; private set; }
 
+    private Outline _outline;
     private GravityChecker _gravityChecker;
     private Rigidbody _rb;
+    private BoxCollider _collider;
     private Transform _itemPoint;
-    private bool _inGravitySource;
+    public bool _inGravitySource;
+
+    
+
+    public ItemData Data { get { return _itemData; } }
+
 
 
     private void Start()
     {
-        _gravityChecker = GetComponent<GravityChecker>();
+        _outline = GetComponent<Outline>();
+        _gravityChecker = GetComponentInChildren<GravityChecker>();
+        _collider = GetComponent<BoxCollider>();
+        _rb = GetComponent<Rigidbody>();
         _gravityChecker.GravityChanged += OnGravityChanged;
     }
 
@@ -23,10 +34,12 @@ public class PickableItem : MonoBehaviour
         _gravityChecker.GravityChanged -= OnGravityChanged;
     }
 
-    private void Awake()
+
+    public void OnFocus(bool focus)
     {
-        _rb = GetComponent<Rigidbody>();
+        _outline.enabled = focus;
     }
+
     public void PickUp(Transform point)
     {
         
@@ -79,4 +92,25 @@ public class PickableItem : MonoBehaviour
             _rb.useGravity = true;
         }
     }
+
+
+    public void PutToInventory()
+    {
+        if (Inventory.Instance.AddItem(this))
+        {
+            //SetVisibility(false);
+            gameObject.SetActive(false);
+        }
+    }
+
+
+/*    public void SetVisibility(bool visible)
+    {
+        _visualObj.SetActive(visible);
+        _rb.isKinematic = !visible;
+        _rb.detectCollisions = visible;
+        _collider.enabled = visible;
+        _gravityChecker.enabled = visible;
+    }*/
+
 }

@@ -25,19 +25,32 @@ public class PlayerInput : MonoBehaviour
         private set { }
     }
 
-    public bool Interaction 
+    public bool PickUp 
     { 
         get 
         {
-            var tmp = _interaction;
-            _interaction = false;
+            var tmp = _pickUp;
+            _pickUp = false;
             return tmp;
         }
         private set { } 
     }
 
+
+    public bool Interaction
+    {
+        get
+        {
+            var tmp = _interaction;
+            _interaction = false;
+            return tmp;
+        }
+        private set { }
+    }
+
     private bool _jump;
     private bool _interaction;
+    private bool _pickUp;
     private bool _inTrain;
     private void Awake()
     {
@@ -68,14 +81,16 @@ public class PlayerInput : MonoBehaviour
             SpaceUp = _touchControls.upButton.IsHolded;
             SpaceDown = _touchControls.downButton.IsHolded;
             _jump = _touchControls.jumpButton.IsTriggered;
-            _interaction = _touchControls.pickUpButton.IsTriggered;
+            _pickUp = _touchControls.pickUpButton.IsTriggered;
+            _interaction = _touchControls.putToInventoryButton.IsTriggered;
         }
         else
         {
             SpaceUp = Input.GetKey(KeyCode.Space);
             SpaceDown = Input.GetKey(KeyCode.LeftControl);
             _jump = SpaceUp;
-            _interaction = Input.GetMouseButtonDown(0);
+            _pickUp = Input.GetMouseButtonDown(0);
+            _interaction = Input.GetKeyDown(KeyCode.E);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))

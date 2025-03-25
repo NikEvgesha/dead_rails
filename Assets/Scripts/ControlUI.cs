@@ -8,6 +8,7 @@ public struct TouchControls
     public OnScreenButton downButton;
     public OnScreenButton jumpButton;
     public OnScreenButton pickUpButton;
+    public OnScreenButton putToInventoryButton;
     public OnScreenJoystick moveJoystick;
     public CameraTouchController cameraTouchController;
 }
@@ -46,6 +47,7 @@ public class ControlUI : MonoBehaviour
     public void ShowPickUpButton(bool visible)
     {
         _touchControls.pickUpButton.gameObject.SetActive(visible);
+        _touchControls.putToInventoryButton.gameObject.SetActive(visible);
     }
 
 }

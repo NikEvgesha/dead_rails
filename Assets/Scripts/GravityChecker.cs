@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GravityChecker))]
 public class GravityChecker : MonoBehaviour
 {
     public bool InGravitySource { get; private set; }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerItemPickUp : MonoBehaviour
@@ -31,7 +30,7 @@ public class PlayerItemPickUp : MonoBehaviour
         }
         
 
-        if (_input.Interaction)
+        if (_input.PickUp)
         {
             if (_grabbedItem != null)
             {
@@ -40,6 +39,11 @@ public class PlayerItemPickUp : MonoBehaviour
             {
                 TryPickupObject();
             } 
+        }
+
+        if (_input.Interaction)
+        {
+            TryPutToInventory();
         }
         
     }
@@ -53,11 +57,16 @@ public class PlayerItemPickUp : MonoBehaviour
             if (hit.transform.TryGetComponent(out PickableItem item))
             {
                 _raycastHitItem = item;
+                item.OnFocus(true);
                 hitted = true;
             } 
         } 
         if (!hitted)
         {
+            if (_raycastHitItem != null)
+            {
+                _raycastHitItem.OnFocus(false);
+            }
             _raycastHitItem = null;
         }
         if (_hitted != hitted)
@@ -70,11 +79,19 @@ public class PlayerItemPickUp : MonoBehaviour
 
     private void TryPickupObject()
     {
-
         if (_raycastHitItem != null)
         {
-                _grabbedItem = _raycastHitItem;
-                _grabbedItem.PickUp(_itemJoint);
+            _grabbedItem = _raycastHitItem;
+            _grabbedItem.PickUp(_itemJoint);
+        }
+    }
+
+
+    private void TryPutToInventory()
+    {
+        if (_grabbedItem == null && _raycastHitItem != null)
+        {
+            _raycastHitItem.PutToInventory();
         }
     }
 

@@ -32,10 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float _currentXRotation = 0f;
     private float _currentYRotation = 0f;
     private ControlUI _controlUI;
-    private int _gravitySourceCounter = 0;
     private GravityChecker _gravityChecker;
-
-    private HashSet<Collider> _gravityPlatforms = new HashSet<Collider>();
 
     void Start()
     {
@@ -120,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (_input.JumpTriggered)
             {
-                Debug.Log("Jump triggered");
                 _velocity.y = _jumpPower;
             }
         }

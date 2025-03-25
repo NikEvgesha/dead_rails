@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private InventoryUI _inventoryUI;
     [SerializeField] private int _capacity = 20;
-
+    [SerializeField] private int _available = 10;
+    [SerializeField] private int _quickSlotsCapacity = 5;
 
     private static Inventory _instance;
     public static Inventory Instance { get { return _instance; } }
 
-    private List<StorableItem> _items;
+    private List<PickableItem> _items;
 
 
     void Awake()
@@ -27,18 +27,31 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         _items = new();
-        _inventoryUI.SpawnSlots(_capacity);
+        InventoryUI.Instance.SpawnSlots(_capacity, _quickSlotsCapacity);
     }
 
-    public bool AddItem(StorableItem item)
+
+
+    public bool AddItem(PickableItem item)
     {
-        if (_capacity <= _items.Count)
+/*        if (item.Data.Stackable)
+        {
+            if (_items.Contains(item)) 
+            {
+                    
+            }
+        }*/
+
+        if (_available <= _items.Count)
         {
             return false;
         }
 
         _items.Add(item);
-        //_inventoryUI.AddItem();
+        item.transform.SetParent(transform);
+
+        InventoryUI.Instance.AddItem(item.Data);
+        Debug.Log(item.Data.Name);
         return true;
     }
 
