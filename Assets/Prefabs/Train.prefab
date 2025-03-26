@@ -301,8 +301,9 @@ MonoBehaviour:
   currentFuel: 100
   fuelConsumptionRate: 1
   acceleration: 1
-  deceleration: 1
   maxSpeed: 20
+  coastDeceleration: 2
+  brakeDeceleration: 10
   playerOnSeat: 0
   ignoreInputDuration: 1
 --- !u!1 &6434978431460418874
@@ -672,6 +673,7 @@ GameObject:
   - component: {fileID: 6635960856202265196}
   - component: {fileID: 2405183959017592498}
   - component: {fileID: 8277460854855324394}
+  - component: {fileID: 8821289765229909345}
   m_Layer: 0
   m_Name: Cube
   m_TagString: GravityPlatform
@@ -765,6 +767,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8821289765229909345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6810699400963961263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9a9e9392b099846b70e73e27b02dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7179114268080416237
 GameObject:
   m_ObjectHideFlags: 0
@@ -3851,7 +3865,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 8550
+  m_VersionIndex: 8556
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
