@@ -8,8 +8,16 @@ public class GravityChecker : MonoBehaviour
 
     public Action<bool> GravityChanged;
 
-    private HashSet<Collider> _gravityPlatforms = new HashSet<Collider>();
+    private HashSet<Collider> _gravityPlatforms;
     private int _gravitySourceCounter = 0;
+
+
+    private void OnEnable()
+    {
+        _gravitySourceCounter = 0;
+        _gravityPlatforms = new();
+        InGravitySource = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -45,5 +53,6 @@ public class GravityChecker : MonoBehaviour
             }
         }
     }
+
 
 }

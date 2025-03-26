@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private DynamicGridSpawner _mainInventoryGrid;
     [SerializeField] private DynamicGridSpawner _qickPanelGrid;
     [SerializeField] private InventorySlot _slotPrefab; // ItemSlot
+    [SerializeField] private Text _capacityText;
 
     private static InventoryUI _instance;
     public static InventoryUI Instance { get { return _instance; } }
@@ -56,7 +58,7 @@ public class InventoryUI : MonoBehaviour
     }
 
 
-    public void AddItem(ItemData itemData)
+    public void AddItem(PickableItem item)
     {
         bool added = false;
 
@@ -64,7 +66,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (_quickSlots[i].Empty)
             {
-                _quickSlots[i].InitSlot(itemData);
+                _quickSlots[i].InitSlot(item);
                 added = true;
                 break;
             }
@@ -76,12 +78,18 @@ public class InventoryUI : MonoBehaviour
         {
             if (_mainSlots[i].Empty)
             {
-                _mainSlots[i].InitSlot(itemData);
+                _mainSlots[i].InitSlot(item);
                 added = true;
                 break;
             }
         }
 
+    }
+
+
+    public void UpdateCapacity(int occupied, int total)
+    {
+        _capacityText.text = occupied + "/" + total;
     }
 
 

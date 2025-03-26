@@ -1,39 +1,40 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private Text _amountText;
+    [SerializeField] private Transform _container;
+    [SerializeField] private InventoryItem _itemIconPrefab;
 
-    private ItemData _itemData;
-    private int _amount;
+    //private InventoryItemIcon
 
-    public ItemData CurrentItem { get { return _itemData; } }
+    //public ItemData CurrentItem { get { return _itemData; } }
    
 
-    public bool Empty { get { return (_itemData == null); } }
+    public bool Empty { get { return (_container.childCount == 0); } }
 
 
-    public void InitSlot(ItemData data)
+    public void InitSlot(PickableItem item)
     {
-        _itemData = data;
-        _image.enabled = true;
-        _image.sprite = _itemData.IMG;
+        InventoryItem icon = Instantiate(_itemIconPrefab, _container);
+        icon.Init(item);
     }
 
-    public ItemData ClearSlot()
+    public void OnDrop(PointerEventData eventData)
     {
-        if (_itemData != null)
+        InventoryItem itemIcon = eventData.pointerDrag.GetComponent<InventoryItem>();
+        if (_container.childCount == 0)
         {
-            _image.sprite = null;
-            _image.enabled = false;
-            ItemData tmp = _itemData;
-            _itemData = null;
-            return tmp;
+            itemIcon.SetNewParent(_container);
+        } else
+        {
+            InventoryItem currentChild = _container.GetChild(0).GetComponent<InventoryItem>();
+            currentChild.SetNewParent(itemIcon.CurrentParent);
+            currentChild.UpdateParent();
+            itemIcon.SetNewParent(_container);
         }
-        return null;
     }
 
 

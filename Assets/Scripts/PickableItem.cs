@@ -18,15 +18,18 @@ public class PickableItem : MonoBehaviour
 
     public ItemData Data { get { return _itemData; } }
 
-
-
-    private void Start()
+    private void OnEnable()
     {
         _outline = GetComponent<Outline>();
         _gravityChecker = GetComponentInChildren<GravityChecker>();
         _collider = GetComponent<BoxCollider>();
         _rb = GetComponent<Rigidbody>();
         _gravityChecker.GravityChanged += OnGravityChanged;
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void OnDisable()
@@ -103,14 +106,21 @@ public class PickableItem : MonoBehaviour
         }
     }
 
-
-/*    public void SetVisibility(bool visible)
+    public void DropOutFromInventory(Transform dropOutPoint)
     {
-        _visualObj.SetActive(visible);
-        _rb.isKinematic = !visible;
-        _rb.detectCollisions = visible;
-        _collider.enabled = visible;
-        _gravityChecker.enabled = visible;
-    }*/
+        gameObject.SetActive(true);
+        transform.SetParent(null); // TODO:  Objects Parent
+        transform.position = dropOutPoint.position;
+    }
+
+
+    /*    public void SetVisibility(bool visible)
+        {
+            _visualObj.SetActive(visible);
+            _rb.isKinematic = !visible;
+            _rb.detectCollisions = visible;
+            _collider.enabled = visible;
+            _gravityChecker.enabled = visible;
+        }*/
 
 }

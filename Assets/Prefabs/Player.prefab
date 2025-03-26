@@ -235,6 +235,7 @@ MonoBehaviour:
   _capacity: 25
   _available: 10
   _quickSlotsCapacity: 5
+  _dropOutPoint: {fileID: 3763508239936990894}
 --- !u!1 &7898971971557895287
 GameObject:
   m_ObjectHideFlags: 0

@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8542118718614108297}
   - component: {fileID: 703666646901570207}
   - component: {fileID: 7037199807800963552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ItemPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
