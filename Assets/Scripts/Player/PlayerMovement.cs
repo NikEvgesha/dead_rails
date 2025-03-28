@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         _input = GetComponent<PlayerInput>();
         _gravityChecker = GetComponent<GravityChecker>();
         _controlUI = FindAnyObjectByType<ControlUI>();
-        _controlUI.UseMobileSetup(_input.UseTouchControl);
+        _controlUI.UseMobileSetup(ControlManager.Instance.UseTouchControl);
 
         _gravityChecker.GravityChanged += OnGravityChanged;
     }

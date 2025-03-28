@@ -4,8 +4,8 @@ public class PlayerInput : MonoBehaviour
 {
     [SerializeField] private bool _useTouchControls = false;
 
-    public bool UseTouchControl { get { return _useTouchControls; } private set { } }
-    public bool IsCursorVisible { get; private set; }
+/*    public bool UseTouchControl { get { return _useTouchControls; } private set { } }
+    public bool IsCursorVisible { get; private set; }*/
     public bool SpaceUp { get; private set; }
     public bool SpaceDown { get; private set; }
 
@@ -54,12 +54,12 @@ public class PlayerInput : MonoBehaviour
     private bool _inTrain;
     private void Awake()
     {
-        if (!_useTouchControls)
+/*        if (!_useTouchControls)
         {
             IsCursorVisible = false;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-        }
+        }*/
     }
 
     private void Start()
@@ -95,7 +95,8 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ShowCursor(!IsCursorVisible);
+            //ShowCursor(!IsCursorVisible);
+            ControlManager.Instance.CursorActive = !ControlManager.Instance.CursorActive;
         }
     }
 
@@ -130,13 +131,13 @@ public class PlayerInput : MonoBehaviour
     }
 
 
-    public void ShowCursor(bool visible)
+/*    public void ShowCursor(bool visible)
     {
         Debug.Log("Set cursor visibility to: " + visible);
         IsCursorVisible = visible;
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
-    }
+    }*/
     public void SitTrain(bool inTrain)
     {
         _inTrain = inTrain;

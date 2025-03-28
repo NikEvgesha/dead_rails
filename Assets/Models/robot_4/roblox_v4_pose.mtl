@@ -1,0 +1,44 @@
+# Blender 4.0.2 MTL File: 'roblox_v4.blend'
+# www.blender.org
+
+newmtl 1Mtl.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.078739 0.078739 0.078739
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd 1_diff.png
+map_Ns 1_spec.png
+map_d 1_diff.png
+map_Bump 1_nmap.png
+
+newmtl 2Mtl.001
+Ns 255.000015
+Ka 1.000000 1.000000 1.000000
+Ks 0.666667 0.666667 0.666667
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd 2_diff.png
+map_d 2_diff.png
+
+newmtl Union2Mtl.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.000000 0.000000
+Ks 0.030065 0.030065 0.030065
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Union3Mtl.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.012804 0.012804 0.012804
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd 1_diff.png
+map_Ns 1_spec.png
+map_d 1_diff.png
+map_Bump 1_nmap.png

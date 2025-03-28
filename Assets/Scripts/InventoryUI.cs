@@ -33,11 +33,13 @@ public class InventoryUI : MonoBehaviour
     public void Open()
     {
         _panel.SetActive(true);
+        ControlManager.Instance.CursorActive = true;
     }
 
     public void Close()
     {
         _panel.SetActive(false);
+        ControlManager.Instance.CursorActive = false;
     }
 
     public void SpawnSlots(int mainCapacity, int quickCapacity)
