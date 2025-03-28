@@ -21,7 +21,7 @@ public class TrainController : MonoBehaviour
     [Header("Настройки водителя")]
     [Tooltip("Находится ли игрок на водительском месте")]
     public bool playerOnSeat = false;
-
+    
     // Текущая скорость поезда (в м/с)
     private float currentSpeed = 0f;
 
@@ -34,7 +34,7 @@ public class TrainController : MonoBehaviour
     public float ignoreInputDuration = 0.5f;
 
     // Общая пройденная дистанция (в метрах)
-    private float totalDistanceTraveled = 0f;
+    public float TotalDistanceTraveled = 0f;
 
     private void Awake()
     {
@@ -107,7 +107,7 @@ public class TrainController : MonoBehaviour
         // Перемещаем поезд по локальной оси X (transform.right)
         transform.position += transform.right * currentSpeed * Time.fixedDeltaTime;
         // Обновляем пройденное расстояние
-        totalDistanceTraveled += currentSpeed * Time.fixedDeltaTime;
+        TotalDistanceTraveled += currentSpeed * Time.fixedDeltaTime;
     }
 
     // Метод для расхода топлива
@@ -146,6 +146,6 @@ public class TrainController : MonoBehaviour
     // Свойство для получения пройденного расстояния в км
     public float DistanceKm
     {
-        get { return totalDistanceTraveled / 1000f; }
+        get { return TotalDistanceTraveled / 1000f; }
     }
 }

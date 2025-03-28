@@ -4,10 +4,12 @@ public class TrainMagnet : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag != "GravityPlatform")
         other.transform.SetParent(this.gameObject.transform);
     }
     private void OnTriggerExit(Collider other)
     {
-        other.transform.SetParent(null);
+        if (other.tag != "GravityPlatform")
+            other.transform.SetParent(null);
     }
 }
