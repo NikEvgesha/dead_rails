@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2663868913893232649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2437083630584939405}
+  - component: {fileID: 4879285742130654048}
+  m_Layer: 0
+  m_Name: WorldManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2437083630584939405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2663868913893232649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4879285742130654048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2663868913893232649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26085006065eb474f8993a34f2d0a881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trainController: {fileID: 0}
+  _stationPrefab: {fileID: 2510556486742860603, guid: c254d2cf026645646afeeb24b812d9ca, type: 3}
+  _islandPrefabs:
+  - {fileID: 4391926708615824477, guid: bf22712ca5f9ae5429115621e9cc2a2c, type: 3}
+  - {fileID: 2551621573929470007, guid: a06f1c8b536e75c45b964db6de2d9b1d, type: 3}
+  _meteorPrefab: {fileID: 0}
+  _stationSpawnSettings: {fileID: 11400000, guid: 20a63002faffce94b8cf4abc08d522ec, type: 2}
+  _islandsSpawnSettings: {fileID: 11400000, guid: cbae763e17b8aae42a5c7e706df6326a, type: 2}
+  _meteorsSpawnSettings: {fileID: 11400000, guid: 0ed89b834380c174a88535ccac585a36, type: 2}

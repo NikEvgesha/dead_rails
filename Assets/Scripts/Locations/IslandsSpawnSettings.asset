@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec2452a17a9a23844906e4a5bdf596b3, type: 3}
   m_Name: IslandsSpawnSettings
   m_EditorClassIdentifier: 
-  MinIslandCount: 3
-  MaxIslandCount: 5
-  SpawnChance: 1
-  XRange: {x: -50, y: 50}
+  SmallIslandPrefabs:
+  - {fileID: 2551621573929470007, guid: a06f1c8b536e75c45b964db6de2d9b1d, type: 3}
+  MinSmallIslands: 3
+  MaxSmallIslands: 4
+  MediumIslandPrefabs:
+  - {fileID: 4391926708615824477, guid: bf22712ca5f9ae5429115621e9cc2a2c, type: 3}
+  MediumIslandCount: 1
+  LargeIslandPrefabs: []
+  LargeIslandChance: 0.5
+  SpawnOffsetRange: {x: -50, y: 50}

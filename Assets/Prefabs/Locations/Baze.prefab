@@ -2326,6 +2326,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3553039296316818923}
+  - component: {fileID: 6951708978901821274}
   m_Layer: 0
   m_Name: Baze
   m_TagString: Untagged
@@ -2364,6 +2365,22 @@ Transform:
   - {fileID: 3772829670676596506}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6951708978901821274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2510556486742860603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be5cc72048351a49b4d71df848948b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buildingSpawnPoints: []
+  _buildingPrefabs: []
+  _hasShops: 1
+  _shopProbability: 0.3
 --- !u!1 &4385664122678300307
 GameObject:
   m_ObjectHideFlags: 0

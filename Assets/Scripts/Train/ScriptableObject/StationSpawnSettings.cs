@@ -4,6 +4,9 @@ using UnityEngine;
 public class StationSpawnSettings : ScriptableObject
 {
     [Header("Настройки станции")]
+    [Tooltip("Префаб станции")]
+    public GameObject StationPrefab;
+
     [Tooltip("Дистанция вперед от поезда, до которой генерируются станции")]
     public float SpawnDistanceAhead = 2000f;
 
@@ -17,3 +20,4 @@ public class StationSpawnSettings : ScriptableObject
     [Range(0f, 1f)]
     public float SpawnChance = 1f;
 }
+    

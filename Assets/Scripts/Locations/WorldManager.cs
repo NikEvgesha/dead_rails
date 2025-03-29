@@ -5,24 +5,21 @@ public class WorldManager : MonoBehaviour
 {
     [Header("Ссылки на объекты")]
     [SerializeField] private TrainController _trainController;
-    [SerializeField] private GameObject _stationPrefab;
-    [SerializeField] private GameObject[] _islandPrefabs;
-    [SerializeField] private GameObject _meteorPrefab;
 
     [Header("Настройки спавна (ScriptableObject)")]
     [SerializeField] private StationSpawnSettings _stationSpawnSettings;
     [SerializeField] private IslandsSpawnSettings _islandsSpawnSettings;
     [SerializeField] private MeteorsSpawnSettings _meteorsSpawnSettings;
 
-    // Список для отслеживания созданных объектов мира
     private List<GameObject> _spawnedWorldObjects = new List<GameObject>();
-
-    // Дистанция, до которой уже сгенерирован мир
     private float _nextSpawnDistance = 0f;
+    private int _stationIndex = 0;
+
+    // Флаг, сигнализирующий, что для текущего порога уже спавнился сегмент
+    private bool _segmentSpawnedForThreshold = false;
 
     void Start()
     {
-        // Если TrainController не задан через инспектор, ищем его
         if (_trainController == null)
         {
             _trainController = FindObjectOfType<TrainController>();
@@ -33,11 +30,11 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        // Генерируем первую станцию (например, для обучения)
+        // Спавним первую станцию вдоль оси X
         SpawnStation(_nextSpawnDistance);
         _nextSpawnDistance += _stationSpawnSettings.StationLength;
 
-        // Предзагружаем сегменты вперед от поезда согласно настроенным параметрам спавна
+        // Заполняем мир вперед до заданного расстояния
         while (_nextSpawnDistance < _trainController.TotalDistanceTraveled + _stationSpawnSettings.SpawnDistanceAhead)
         {
             SpawnNextSegment();
@@ -46,16 +43,24 @@ public class WorldManager : MonoBehaviour
 
     void Update()
     {
-        // Генерируем новые сегменты, если поезд продвигается
-        while (_nextSpawnDistance < _trainController.TotalDistanceTraveled + _stationSpawnSettings.SpawnDistanceAhead)
+        // Если условие спавна выполнено и для него еще не был заспавнен сегмент,
+        // то спавним следующий сегмент и ставим флаг.
+        if (!_segmentSpawnedForThreshold &&
+            _trainController.TotalDistanceTraveled + _stationSpawnSettings.SpawnDistanceAhead >= _nextSpawnDistance)
         {
             SpawnNextSegment();
+            _segmentSpawnedForThreshold = true;
+        }
+        // Если условие уже не выполняется, сбрасываем флаг.
+        else if (_trainController.TotalDistanceTraveled + _stationSpawnSettings.SpawnDistanceAhead < _nextSpawnDistance)
+        {
+            _segmentSpawnedForThreshold = false;
         }
 
-        // Удаляем объекты, оказавшиеся далеко позади поезда
+        // Удаляем объекты, которые находятся позади поезда (по оси X)
         for (int i = _spawnedWorldObjects.Count - 1; i >= 0; i--)
         {
-            if (_spawnedWorldObjects[i].transform.position.z < _trainController.TotalDistanceTraveled - _stationSpawnSettings.DespawnDistanceBehind)
+            if (_spawnedWorldObjects[i].transform.position.x < _trainController.TotalDistanceTraveled - _stationSpawnSettings.DespawnDistanceBehind)
             {
                 Destroy(_spawnedWorldObjects[i]);
                 _spawnedWorldObjects.RemoveAt(i);
@@ -64,8 +69,8 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Генерирует следующий сегмент мира: станция, острова и метеоры.
-    /// Используются шансы спавна из настроек.
+    /// Генерирует следующий сегмент мира: станция, острова и метеоры,
+    /// затем увеличивает _nextSpawnDistance.
     /// </summary>
     private void SpawnNextSegment()
     {
@@ -75,11 +80,8 @@ public class WorldManager : MonoBehaviour
             SpawnStation(_nextSpawnDistance);
         }
 
-        // Спавним острова, если шанс позволяет
-        if (Random.value <= _islandsSpawnSettings.SpawnChance)
-        {
-            SpawnIslandsBetweenStations(_nextSpawnDistance - _stationSpawnSettings.StationLength, _nextSpawnDistance);
-        }
+        // Спавним острова согласно логике из IslandsSpawnSettings
+        SpawnIslandsBetweenStations(_nextSpawnDistance - _stationSpawnSettings.StationLength, _nextSpawnDistance);
 
         // Спавним метеоры, если шанс позволяет
         if (Random.value <= _meteorsSpawnSettings.SpawnChance)
@@ -87,60 +89,61 @@ public class WorldManager : MonoBehaviour
             SpawnMeteors(_nextSpawnDistance - _stationSpawnSettings.StationLength, _nextSpawnDistance);
         }
 
-        // Обновляем следующую дистанцию
         _nextSpawnDistance += _stationSpawnSettings.StationLength;
     }
 
     /// <summary>
-    /// Создает станцию на заданной дистанции (по оси Z)
+    /// Создаёт станцию вдоль оси X и передаёт ей порядковый номер.
     /// </summary>
-    /// <param name="distance">Дистанция для спавна станции</param>
     private void SpawnStation(float distance)
     {
-        Vector3 spawnPos = new Vector3(0f, 0f, distance);
-        GameObject station = Instantiate(_stationPrefab, spawnPos, Quaternion.identity);
+        Vector3 spawnPos = new Vector3(distance, 0f, 0f);
+        GameObject station = Instantiate(_stationSpawnSettings.StationPrefab, spawnPos, Quaternion.identity);
         _spawnedWorldObjects.Add(station);
+
+        StationGenerator generator = station.GetComponent<StationGenerator>();
+        if (generator != null)
+        {
+            generator.InitializeStation(_stationIndex);
+        }
+        _stationIndex++;
     }
 
     /// <summary>
-    /// Создает острова в заданном сегменте между станциями
+    /// Создаёт острова в сегменте между станциями.
+    /// Острова равномерно распределяются вдоль оси X, а смещение по оси Z берётся из SpawnOffsetRange.
     /// </summary>
-    /// <param name="startDistance">Начало сегмента</param>
-    /// <param name="endDistance">Конец сегмента</param>
     private void SpawnIslandsBetweenStations(float startDistance, float endDistance)
     {
-        // Определяем количество островов в сегменте
-        int islandCount = Random.Range(_islandsSpawnSettings.MinIslandCount, _islandsSpawnSettings.MaxIslandCount + 1);
+        List<GameObject> islandPrefabs = _islandsSpawnSettings.GetIslandPrefabsForSegment();
+        int totalCount = islandPrefabs.Count;
+        float segmentLength = endDistance - startDistance;
 
-        for (int i = 0; i < islandCount; i++)
+        // Равномерное распределение: делим сегмент на (totalCount + 1) частей
+        for (int i = 0; i < totalCount; i++)
         {
-            float z = Random.Range(startDistance, endDistance);
-            float x = Random.Range(_islandsSpawnSettings.XRange.x, _islandsSpawnSettings.XRange.y);
+            float x = startDistance + segmentLength * (i + 1) / (totalCount + 1);
+            float z = Random.Range(_islandsSpawnSettings.SpawnOffsetRange.x, _islandsSpawnSettings.SpawnOffsetRange.y);
             Vector3 islandPos = new Vector3(x, 0f, z);
-
-            int islandIndex = Random.Range(0, _islandPrefabs.Length);
-            GameObject island = Instantiate(_islandPrefabs[islandIndex], islandPos, Quaternion.identity);
+            GameObject island = Instantiate(islandPrefabs[i], islandPos, Quaternion.identity);
             _spawnedWorldObjects.Add(island);
         }
     }
 
     /// <summary>
-    /// Создает метеоры в заданном сегменте
+    /// Создаёт метеоры в заданном сегменте.
+    /// Использует MeteorPrefab из _meteorsSpawnSettings.
     /// </summary>
-    /// <param name="startDistance">Начало сегмента</param>
-    /// <param name="endDistance">Конец сегмента</param>
     private void SpawnMeteors(float startDistance, float endDistance)
     {
         int meteorCount = Random.Range(_meteorsSpawnSettings.MinMeteorCount, _meteorsSpawnSettings.MaxMeteorCount + 1);
-
         for (int i = 0; i < meteorCount; i++)
         {
-            float z = Random.Range(startDistance, endDistance);
-            float x = Random.Range(_meteorsSpawnSettings.XRange.x, _meteorsSpawnSettings.XRange.y);
+            float x = Random.Range(startDistance, endDistance);
+            float z = Random.Range(_meteorsSpawnSettings.SpawnOffsetRange.x, _meteorsSpawnSettings.SpawnOffsetRange.y);
             float y = Random.Range(_meteorsSpawnSettings.YRange.x, _meteorsSpawnSettings.YRange.y);
             Vector3 meteorPos = new Vector3(x, y, z);
-
-            GameObject meteor = Instantiate(_meteorPrefab, meteorPos, Quaternion.identity);
+            GameObject meteor = Instantiate(_meteorsSpawnSettings.MeteorPrefab, meteorPos, Quaternion.identity);
             _spawnedWorldObjects.Add(meteor);
         }
     }

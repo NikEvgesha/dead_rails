@@ -3,7 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SpawnSettings/MeteorsSpawnSettings")]
 public class MeteorsSpawnSettings : ScriptableObject
 {
-    [Header("Настройки метеоров")]
+    [Header("Настройки метеора")]
+    [Tooltip("Префаб метеора")]
+    public GameObject MeteorPrefab;
+
     [Tooltip("Минимальное количество метеоров в сегменте")]
     public int MinMeteorCount = 1;
 
@@ -14,8 +17,9 @@ public class MeteorsSpawnSettings : ScriptableObject
     [Range(0f, 1f)]
     public float SpawnChance = 1f;
 
-    [Tooltip("Диапазон смещения по оси X для метеоров")]
-    public Vector2 XRange = new Vector2(-100f, 100f);
+    [Header("Настройки позиционирования")]
+    [Tooltip("Диапазон смещения по оси Z для метеоров (от центральной линии пути)")]
+    public Vector2 SpawnOffsetRange = new Vector2(-100f, 100f);
 
     [Tooltip("Диапазон высоты (оси Y) для метеоров")]
     public Vector2 YRange = new Vector2(50f, 200f);

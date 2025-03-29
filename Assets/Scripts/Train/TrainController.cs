@@ -21,9 +21,9 @@ public class TrainController : MonoBehaviour
     [Header("Настройки водителя")]
     [Tooltip("Находится ли игрок на водительском месте")]
     public bool playerOnSeat = false;
-    
+
     // Текущая скорость поезда (в м/с)
-    private float currentSpeed = 0f;
+    public float currentSpeed = 0f;
 
     // Значение ввода (ось "Vertical"), получаемое в Update и используемое в FixedUpdate
     private float inputValue;

@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 2979064991470697230}
   - component: {fileID: 5775901137769488220}
   - component: {fileID: 563206070149850648}
+  - component: {fileID: 5754602867534631492}
   m_Layer: 0
   m_Name: Train
   m_TagString: Untagged
@@ -298,14 +299,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14020b91c870f494b8348e081f52ab7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentFuel: 100
+  currentFuel: 1000
   fuelConsumptionRate: 1
-  acceleration: 1
-  maxSpeed: 20
-  coastDeceleration: 2
-  brakeDeceleration: 10
+  acceleration: 5
+  maxSpeed: 75
+  coastDeceleration: 5
+  brakeDeceleration: 5
   playerOnSeat: 0
+  currentSpeed: 0
   ignoreInputDuration: 1
+  TotalDistanceTraveled: 0
+--- !u!114 &5754602867534631492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992968405123313951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268bddc4ecf9ece4bb60e027cfdf8cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  railPrefab: {fileID: 2001829072196873229, guid: 6e7db9078efb8b64a9d4f1e9b81e0b9c, type: 3}
+  poolSize: 45
+  railLength: 3.783
+  railsBackward: 20
+  railsForward: 20
 --- !u!1 &6434978431460418874
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,8 +710,8 @@ Transform:
   m_GameObject: {fileID: 6810699400963961263}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3713, y: 1.7877971, z: 0.0481}
-  m_LocalScale: {x: 7.6616526, y: 2.3084555, z: 3.0603597}
+  m_LocalPosition: {x: 1.5, y: 1.59, z: -0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2979064991470697230}
@@ -765,7 +785,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 7.78, y: 1.92, z: 3.09}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8821289765229909345
 MonoBehaviour:
@@ -3865,7 +3885,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 8556
+  m_VersionIndex: 8571
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

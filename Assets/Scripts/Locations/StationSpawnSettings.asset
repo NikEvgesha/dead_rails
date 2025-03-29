@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e251260dbd18fed46beed4bb686d052c, type: 3}
   m_Name: StationSpawnSettings
   m_EditorClassIdentifier: 
+  StationPrefab: {fileID: 2510556486742860603, guid: c254d2cf026645646afeeb24b812d9ca, type: 3}
   SpawnDistanceAhead: 2000
   DespawnDistanceBehind: 500
-  StationLength: 20000
+  StationLength: 10000
   SpawnChance: 1
